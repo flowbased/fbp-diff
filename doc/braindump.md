@@ -47,21 +47,18 @@ For ease of parsing with other tools. One line per
 
 # Implementation
 
-
-
-Can perhaps use some code in Noflo.Graph and/or NoFlo.Journal?
-https://github.com/noflo/noflo/blob/master/src/lib/Graph.coffee
-https://github.com/noflo/noflo/blob/master/src/lib/Journal.coffee
+Can perhaps use some code in [Noflo.Graph](https://github.com/noflo/noflo/blob/master/src/lib/Graph.coffee)
+and/or [NoFlo.Journal](https://github.com/noflo/noflo/blob/master/src/lib/Journal.coffee)?
 Would then be beneficial if Journal and Graph was split out of NoFlo...
 
 Other possibly useful libs
 
-* Graph theory and visualization: http://js.cytoscape.org/#demos
+* Graph theory and visualization, [Cytoscape](http://js.cytoscape.org/#demos)
 
 
 # git integration
 
-http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program
+Custom git diff/merge tools hwoto: [1](http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program)
 Might need some sniffing capability to determine whether a given .json file is a FBP graph or not.
 `fbp-validate`?
 
@@ -78,20 +75,24 @@ Some prior art on visual diffing:
 
 The onion-skinning approach might work well
 
-Use the-graph to implement? https://github.com/the-grid/the-graph
+Use [the-graph](https://github.com/the-grid/the-graph) to implement?
 
 Would be useful to have also on cmdline.
 In interactive case, perhaps it can just spawn a browser which computes diff and displays?
-For non-interactive
+For non-interactive, just run&render with PhantomJS?
+Or use a node.js compatible visualizer, maybe using node-canvas etc?
+
+# Related
+
+Refactoring support ideas found here: https://github.com/jonnor/projects/tree/master/fbp-meta
 
 # Merge support?
 
-Would have to both view/visualize the differences,
-and allow to change.
+Would have to both view/visualize the differences, and allow to change the graph to get to resolved state.
 Minimum viable: visualization of both original states (A, B) and resolved state (C) as image+editable JSON
 Ideally this would be a part of workflow in Flowhub IDE
 
 # Component diffing?
 
 Should the tool also support diffing (text) components or only do graphs?
-Would be mostly as fallback..
+Would be mostly as fallback... Perhaps better to error out, and leave this to tools dedicated to the purpose.

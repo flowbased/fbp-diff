@@ -1,6 +1,7 @@
 # fbp-diff
 
-Diff utility for [FBP graphs](), making it easier to determine changes compare to using a textual diff.
+Diff utility for [FBP graphs](http://noflojs.org/documentation/json/),
+making it easier to determine changes compare to using a textual diff.
 
 ## Status
 
