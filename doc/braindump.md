@@ -74,8 +74,10 @@ Other possibly useful libs
 # git integration
 
 Custom git diff/merge tools hwoto: [1](http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program)
-Might need some sniffing capability to determine whether a given .json file is a FBP graph or not.
-`fbp-validate`?
+Might need some sniffing capability to determine whether a given .json file is a FBP graph or not. `fbp-validate`?
+
+Let Flowhub store a textual diff and/or summary into git commits? Appended in message and/or a git graft.
+Could be useful to look at git logs/history and understand changes without using fbp-diff, for instance in Github
 
 # Ui/visualization
 
@@ -104,9 +106,16 @@ In interactive case, perhaps it can just spawn a browser which computes diff and
 For non-interactive, just run&render with PhantomJS?
 Or use a node.js compatible visualizer, maybe using node-canvas etc?
 
-# Related
+# Applying diffs
 
-Refactoring support ideas found here: https://github.com/jonnor/projects/tree/master/fbp-meta
+The dual to a `diff` command is `patch`. Could we store/output our diffs in a way they can be applied as a patch?
+That would allow to apply the change of one git commit (which only stores textual differences) to
+another version of a graph.
+It could also assist in automated merge handling, as a textual merge conflict might resolve as a FBP diff+patch.
+
+Some changes might also apply to other, similar graphs: Starting to look more like general refactoring support.
+Might require generalizations though, like `-+ *(Component) *(NewComponent)` to match regardless of node name.
+Some more refactoring ideas found here: https://github.com/jonnor/projects/tree/master/fbp-meta
 
 # Merge support?
 
