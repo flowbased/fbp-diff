@@ -1,3 +1,9 @@
+
+# Basics
+
+Should be able to be used as library, including in Flowhub
+Should be usable on command-line, both interactively and in scripts
+
 # Desired information
 
 Things that can change: nodes, connections, IIPs, inports, outports
@@ -12,6 +18,14 @@ Exit status should reflect whether there are changes or not
 Maybe use heuristics to determine 'changes' from things that were both added and removed,
 similar to how git does 'rewrote file 100%'.
 
+Example includes:
+
+- group changes
+- node id changed
+- component type changed (and possibly node id at same time)
+
+Showing meta-data changes (or only 'real changes') should probably be an option.
+
 ## details mode:
 
     + 'IIP' -> foo
@@ -20,7 +34,9 @@ similar to how git does 'rewrote file 100%'.
     - foo CONN -> IN bar
 
 How should these lines be sorted?
-Ideally the adjacency would be taken into account. All 
+Ideally the adjacency of graph would be taken into account, so related changes are grouped together.
+Most changes are relative to a particular *node*, so sorting by affected source/target might be an OK starting point.
+It is also relatively common for graphs to 'flow' left-to-right, so that is ideally respected too.
 
 ## summary mode:
     
@@ -44,7 +60,6 @@ For ease of parsing with other tools. One line per
     Connections added: M
     ...
 
-
 # Implementation
 
 Can perhaps use some code in [Noflo.Graph](https://github.com/noflo/noflo/blob/master/src/lib/Graph.coffee)
@@ -67,13 +82,20 @@ Might need some sniffing capability to determine whether a given .json file is a
 Would show a visual diff between two versions of a graph.
 Should probably be a separate executable `fbp-visualdiff`.
 
+Would need to respect the node position metadata left by Flowhub.
+
 Some prior art on visual diffing:
 
 * Image diffs by Github, https://help.github.com/articles/rendering-and-diffing-images/
 * Map diffs by Github, https://www.mapbox.com/blog/github-visual-diff/
 * 3d file diffs by Github, https://github.com/blog/1633-3d-file-diffs
 
-The onion-skinning approach might work well
+The `onion skinning` approach might work OK.
+
+A challenging is that node positions tend to change a bit.
+If they have moved a lot, it may be hard to spot what actually changed. Connections/nodes etc
+Would be nice to be able to 'trace' / 'animate' the movements.
+Remove/add goes to 0/100% opacity over ~half range of slider, movements animate to/from position over whole range?
 
 Use [the-graph](https://github.com/the-grid/the-graph) to implement?
 
@@ -96,3 +118,8 @@ Ideally this would be a part of workflow in Flowhub IDE
 
 Should the tool also support diffing (text) components or only do graphs?
 Would be mostly as fallback... Perhaps better to error out, and leave this to tools dedicated to the purpose.
+
+# Filtering?
+
+If one is only interested in changes affecting a particular *node* (or *component*),
+perhaps one could specify that as a filter. Exit status would also reflect.
