@@ -1,12 +1,12 @@
 
 # Basics
 
-Should be able to be used as library, including in Flowhub
-Should be usable on command-line, both interactively and in scripts
+* Should be able to be used as library, including in Flowhub.
+* Should be usable on command-line, both interactively and in scripts.
 
 # Desired information
 
-Things that can change: nodes, connections, IIPs, inports, outports
+Things that can change: nodes, connections, IIPs, inports, outports.
 Also meta-data about each of these, plus graph metadata.
 
 Basic usage
@@ -76,7 +76,8 @@ Other possibly useful libs
 Custom git diff/merge tools hwoto: [1](http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program)
 Might need some sniffing capability to determine whether a given .json file is a FBP graph or not. `fbp-validate`?
 
-Let Flowhub store a textual diff and/or summary into git commits? Appended in message and/or a git graft.
+Let Flowhub store a textual diff and/or summary into git commits?
+Appended in message and/or a [git note](https://www.kernel.org/pub/software/scm/git/docs/git-notes.html).
 Could be useful to look at git logs/history and understand changes without using fbp-diff, for instance in Github
 
 # Ui/visualization
@@ -108,9 +109,9 @@ Or use a node.js compatible visualizer, maybe using node-canvas etc?
 
 # Applying diffs
 
-The dual to a `diff` command is `patch`. Could we store/output our diffs in a way they can be applied as a patch?
-That would allow to apply the change of one git commit (which only stores textual differences) to
-another version of a graph.
+The inverse to a `diff` command is `patch`.
+Could we store/output our diffs in a way they can be applied as a patch?
+Would allow to apply the change of one git commit (which only stores textual differences) to another version of a graph.
 It could also assist in automated merge handling, as a textual merge conflict might resolve as a FBP diff+patch.
 
 Some changes might also apply to other, similar graphs: Starting to look more like general refactoring support.
@@ -138,9 +139,11 @@ Some metadata is more volatile, and less semantically important that others.
 Consider difference between node position (updated whenever moving things around in Flowhub),
 and `guv` autoscaling config for instance.
 
-# .fbp roundtrips
+# .fbp roundtrips?
 
 Currently the FBP library parses .fbp into a JSON representation, but there is no .fbp renderer.
+It would be nice to allow to get a patched .fbp file as .fbp, with minimal changes.
+
 Also, during parsing, some information is currently lost. Notably comments, and formatting
 (whether connections are on one line, split over multiple, where component instance is specified...).
 There is also no group concept, though probably one could have based on text-blocks delimited by a whitespace-only line?
