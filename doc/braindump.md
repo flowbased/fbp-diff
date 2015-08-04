@@ -95,7 +95,7 @@ Some prior art on visual diffing:
 The `onion skinning` approach might work OK.
 
 A challenging is that node positions tend to change a bit.
-If they have moved a lot, it may be hard to spot what actually changed. Connections/nodes etc
+If  they have moved a lot, it may be hard to spot what actually changed. Connections/nodes etc
 Would be nice to be able to 'trace' / 'animate' the movements.
 Remove/add goes to 0/100% opacity over ~half range of slider, movements animate to/from position over whole range?
 
@@ -117,10 +117,40 @@ Some changes might also apply to other, similar graphs: Starting to look more li
 Might require generalizations though, like `-+ *(Component) *(NewComponent)` to match regardless of node name.
 Some more refactoring ideas found here: https://github.com/jonnor/projects/tree/master/fbp-meta
 
+# Merge conflicts
+
+In text-based diffing, a merge conflict occurs if two changes are done to the same lines of text/code.
+This is a very loose definition, for instance, a change of function name in one changeset
+can easily break another changeset (referring the old function name).
+It only considers the data-format, not the semantics of the data.
+
+One could to the same with FBP graphs, only consider the validity of the JSON when determining whether a merge is conflicting or not.
+But one still needs to decide on granularity. Are two changes in `connections` always conflicting, since its one ordered collection?
+Or are only changes which cause changes in ordering. Or only changes to the same connection object?
+Operational transforms might allow to automatically handle some cases which would seem to be conflicting naively.
+
+A more semantically aware approach is also possible.
+`connections`, `inports` and so on refer to `nodes` (and the `ports` of the `Component` the node is).
+
+
+One would also have to decide if the merging should consider `metadata` or not.
+Some metadata is more volatile, and less semantically important that others.
+Consider difference between node position (updated whenever moving things around in Flowhub),
+and `guv` autoscaling config for instance.
+
+# .fbp roundtrips
+
+Currently the FBP library parses .fbp into a JSON representation, but there is no .fbp renderer.
+Also, during parsing, some information is currently lost. Notably comments, and formatting
+(whether connections are on one line, split over multiple, where component instance is specified...).
+There is also no group concept, though probably one could have based on text-blocks delimited by a whitespace-only line?
+Comments could maybe be put in group, node, connection metadata?
+
+
 # Merge support?
 
 Would have to both view/visualize the differences, and allow to change the graph to get to resolved state.
-Minimum viable: visualization of both original states (A, B) and resolved state (C) as image+editable JSON
+Minimum viable: visualization of both original states (A, B) and resolved states (C) as image+editable JSON
 Ideally this would be a part of workflow in Flowhub IDE
 
 # Component diffing?
