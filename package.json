@@ -7,7 +7,7 @@
     "doc": "doc"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha  --reporter spec --compilers .coffee:coffee-script/register spec/*.coffee"
   },
   "repository": {
     "type": "git",

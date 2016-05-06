@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+fbpdiff = require('../');
+fbpdiff.diff.main();
