@@ -1,0 +1,35 @@
+{
+  "name": "fbp-diff",
+  "version": "0.0.1",
+  "description": "Diff tool for FBP graphs",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonnor/fbp-diff.git"
+  },
+  "keywords": [
+    "FBP",
+    "microflo",
+    "noflo",
+    "diff",
+    "git"
+  ],
+  "author": "Jon Nordby <jononor@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonnor/fbp-diff/issues"
+  },
+  "homepage": "https://github.com/jonnor/fbp-diff#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coffee-script": "^1.10.0",
+    "fbp": "^1.1.4",
+    "mocha": "^2.4.5"
+  }
+}
