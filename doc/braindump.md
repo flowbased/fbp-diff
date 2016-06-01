@@ -92,6 +92,7 @@ Some prior art on visual diffing:
 * Image diffs by Github, https://help.github.com/articles/rendering-and-diffing-images/
 * Map diffs by Github, https://www.mapbox.com/blog/github-visual-diff/
 * 3d file diffs by Github, https://github.com/blog/1633-3d-file-diffs
+* Structural webpage diffing, https://blog.spotbot.qa/building-accurate-visual-diffs-6b41b09973a6#.9h8l3tsmf
 
 The `onion skinning` approach might work OK.
 
