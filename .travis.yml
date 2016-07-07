@@ -1,3 +1,11 @@
 language: node_js
 node_js:
 - '4.2'
+deploy:
+  provider: npm
+  email: jononor@gmail.com
+  api_key:
+    secure: jLioivz/jubkpBo+TF3yLt+9xZI+mRi5PR7/M6t2+h+1/NF0ApaXYuXFkeNie25A8vC1XdWt20/X74iuVjtPkoxkuUWnNa3GQyh7BN/QxzemNxO14/GBpGABgZ/mNcvG7ecZvfk1us5+dFm/stBqazNnjSKv4C96FquRMUPMfj4+QD8yKO33XW3JATk4vrQvlnzA2ZGLP1miWTELugtG8GA47mRunWUkkdkES2/4FZO3QSUIKio4Q/CHPLESUT4rYcQT3k//sTCstzAvRUE6zKY6GOpZ41burYD0zkhN8ORXoJck4OVmIUULSyZlXgTKA6EtDFmbK6z6rl+uJhF4nOMVVhP72iZeYIqISuIxmNJuS/rTNAFzHkZ5TP7sNG0okaA6tR1L8jrXCsnmtOTJXMHXXylaiNOgkxPCB6eKpZC9IfIQHZWZfTh7ZExoGOrfWYjZ0zlqQniX8nZQ8JBHBWYdMvKVUy2c6iABe6+iOXM9r3fFELWFzMJVFZncrE0Iwv2z5KsBAMiSkY7qccJx46+TgZmtU0AoLiypG1zJhns/BQqSrtWQE4kU8WUHjXGbvrWKOfxKdrzOBF4FVObDsoP/sOKUk9h1WvuEGL/eZ9bLS25qG1Ax0vMF7ZJFHPmBLL8glPGMrBpwalKl9ipRINMdtAjVvKqRncYysur/ySk=
+  on:
+    tags: true
+    repo: jonnor/fbp-diff
