@@ -23,7 +23,9 @@ processChanges = (from, to) ->
         changes.push
           type: 'process-component-changed'
           data:
-            component: component
+            component: process.component
+            name: name
+            process: process
           previous:
             component: oldComponent
       # TODO: implement diffing of node metadata. Per top-level key?
@@ -115,7 +117,7 @@ formatChangeTextual = (change) ->
   switch change.type
     when 'process-added' then "+ #{d.name}(#{d.process.component})"
     when 'process-removed' then "- #{d.name}(#{d.process.component})"
-    when 'process-component-changed' then "$component #{d.name}(#{d.process}) was (#{d.process})"
+    when 'process-component-changed' then "$component #{d.name}(#{d.component}) was (#{old.component})"
     when 'edge-added' then "+ #{formatEdge(d)}"
     when 'edge-removed' then "- #{formatEdge(d)}"
     else
