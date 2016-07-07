@@ -150,7 +150,7 @@ readGraphFile = (filepath, callback) ->
   fs.readFile filepath, { encoding: 'utf-8' }, (err, contents) ->
     return callback err if err
     try
-      graph = readGraph contents
+      graph = readGraph contents, type
     catch e
       return callback e
     return callback null, graph
