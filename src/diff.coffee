@@ -86,7 +86,8 @@ readGraph = (contents, type) ->
   else
     return JSON.parse contents
 
-# TODO: support parsing up a diff from the textual output format? Mostly useful if/when one can apply diff as a patch
+# TODO: support parsing up a diff from the textual output format?
+# Mostly useful if/when one can apply diff as a patch
 
 # node.js only
 readGraphFile = (filepath, callback) ->
@@ -117,5 +118,3 @@ exports.main = main = () ->
       diff = calculateDiff fromGraph, toGraph
       out = formatDiffTextual diff
       console.log out
-
-main() if not module.parent
