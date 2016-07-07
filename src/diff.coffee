@@ -1,6 +1,8 @@
 
 clone = (obj) ->
   return JSON.parse(JSON.stringify(obj))
+jsonEquals = (a, b) ->
+  return JSON.stringify(a) == JSON.stringify(b)
 
 processChanges = (from, to) ->
   changes = []
@@ -48,6 +50,37 @@ connEquals = (a, b) ->
   return a.process == b.process and a.port == b.port and a.index == b.index
 edgeEquals = (a, b) ->
   return connEquals(a.tgt, b.tgt) and connEquals(a.src, b.src)
+iipEdgeEquals = (a, b) ->
+  return connEquals(a.tgt, b.tgt) and jsonEquals(a.data, b.data)
+
+# TODO: distinguish between just the IIP payload changing, and just target of the IIP
+iipChanges = (from, to) ->
+  changes = []
+  # IIP diffing
+  for edge in from
+    found = to.filter (e) -> return iipEdgeEquals edge, e
+    if found.length == 0
+      # removed
+      changes.push
+        type: 'iip-removed'
+        data: edge
+    else if found.length == 1
+      # FIXME: implement diffing of order changes for IIPs
+    else
+      throw new Error "Found duplicate matches for IIP: #{edge}\n #{found}"
+  for edge in to
+    found = from.filter (e) -> return iipEdgeEquals edge, e
+    if found.length == 0
+      # added
+      changes.push
+        type: 'iip-added'
+        data: edge
+    else if found.length == 1
+      # FIXME: implement diffing of order changes for IIPs
+    else
+      throw new Error "Found duplicate matches for IIP: #{edge}\n #{found}"
+
+  return changes
 
 connectionChanges = (from, to) ->
   # A connection can either be an edge (between two processes), or an IIP
@@ -70,7 +103,6 @@ connectionChanges = (from, to) ->
       # FIXME: implement diffing of order changes for edges
     else
       throw new Error "Found duplicate matches for edge: #{edge}\n #{found}"
-
   for edge in toEdges
     found = fromEdges.filter (e) -> return edgeEquals edge, e
     if found.length == 0
@@ -83,7 +115,8 @@ connectionChanges = (from, to) ->
     else
       throw new Error "Found duplicate matches for edge: #{edge}\n #{found}"
 
-  # FIXME: implement diffing of IIPs
+  changes = changes.concat iipChanges(fromIIPs, toIIPs)
+
   # TODO: implement diffing of connection metadata. Per top-level key?
   return changes
 
@@ -110,6 +143,9 @@ formatEdge = (e) ->
   srcIndex = if e.src.index then "[#{e.src.index}]" else ""
   tgtIndex = if e.tgt.index then "[#{e.src.index}]" else ""
   return "#{e.src.process} #{e.src.port} -> #{e.tgt.port} #{e.tgt.process}"
+formatIIP = (e) ->
+  tgtIndex = if e.tgt.index then "[#{e.tgt.index}]" else ""
+  return "#{JSON.stringify(e.data)} -> #{e.tgt.port}#{tgtIndex} #{e.tgt.process}"
 
 formatChangeTextual = (change) ->
   d = change.data
@@ -120,6 +156,8 @@ formatChangeTextual = (change) ->
     when 'process-component-changed' then "$component #{d.name}(#{d.component}) was (#{old.component})"
     when 'edge-added' then "+ #{formatEdge(d)}"
     when 'edge-removed' then "- #{formatEdge(d)}"
+    when 'iip-added' then "+ #{formatIIP(d)}"
+    when 'iip-removed' then "- #{formatIIP(d)}"
     else
       throw new Error "Cannot format unsupported change type: #{change.type}"
 
