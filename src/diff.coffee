@@ -36,11 +36,54 @@ processChanges = (from, to) ->
 
   return changes
 
+isIIP = (conn) ->
+  return conn.data?
+isEdge = (conn) ->
+  return not isIIP(conn)
+
+# NOTE: does not take metadata into account
+connEquals = (a, b) ->
+  return a.process == b.process and a.port == b.port and a.index == b.index
+edgeEquals = (a, b) ->
+  return connEquals(a.tgt, b.tgt) and connEquals(a.src, b.tgt)
+
 connectionChanges = (from, to) ->
-  # FIXME: implement diffing of edges
+  # A connection can either be an edge (between two processes), or an IIP
+  fromEdges = from.filter isEdge
+  toEdges = to.filter isEdge
+  fromIIPs = from.filter isIIP
+  toIIPs = to.filter isIIP
+
+  changes = []
+
+  # Edge diffing
+  for edge in fromEdges
+    found = toEdges.filter (e) -> return edgeEquals edge, e
+    if found.length == 0
+      # removed
+      changes.push
+        type: 'edge-removed'
+        data: edge
+    else if found.length == 1
+      # FIXME: implement diffing of order changes for edges
+    else
+      throw new Error "Found duplicate matches for edge: #{edge}\n #{found}"
+
+  for edge in toEdges
+    found = fromEdges.filter (e) -> return edgeEquals edge, e
+    if found.length == 0
+      # added
+      changes.push
+        type: 'edge-added'
+        data: edge
+    else if found.length == 1
+      # FIXME: implement diffing of order changes for edges
+    else
+      throw new Error "Found duplicate matches for edge: #{edge}\n #{found}"
+
   # FIXME: implement diffing of IIPs
   # TODO: implement diffing of connection metadata. Per top-level key?
-  return []
+  return changes
 
 # calculate a list of changes between @from and @to
 # this is just the basics/dry-fact view. Any heuristics etc is applied afterwards
@@ -61,13 +104,20 @@ calculateDiff = (from, to) ->
     changes: changes
   return diff
 
+formatEdge = (e) ->
+  srcIndex = if e.src.index then "[#{e.src.index}]" else ""
+  tgtIndex = if e.tgt.index then "[#{e.src.index}]" else ""
+  return "#{e.src.process} #{e.src.port} -> #{e.tgt.port} #{e.tgt.process}"
+
 formatChangeTextual = (change) ->
   d = change.data
   old = change.previous
   switch change.type
     when 'process-added' then "+ #{d.name}(#{d.process.component})"
     when 'process-removed' then "- #{d.name}(#{d.process.component})"
-    when 'process-component-changed' then "$component #{d.name}(#{d.process}) was (#{d.process})" # XXX: is this a good formatting?
+    when 'process-component-changed' then "$component #{d.name}(#{d.process}) was (#{d.process})"
+    when 'edge-added' then "+ #{formatEdge(d)}"
+    when 'edge-removed' then "- #{formatEdge(d)}"
     else
       throw new Error "Cannot format unsupported change type: #{change.type}"
 
