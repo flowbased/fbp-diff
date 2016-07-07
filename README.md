@@ -1,13 +1,17 @@
 # fbp-diff
 
-Diff utility for [FBP graphs](http://noflojs.org/documentation/json/),
+Diff utility for [FBP graphs](http://github.com/flowbased/fbp),
 making it easier to determine changes compare to using a naive textual diff of the JSON files.
+
+FBP graphs are used to specify a [Flow-based programming (FBP)]() or dataflow program,
+consisting of processes and connections between them.
+The processes are nodes in the graph, and the connections are edges.
 
 ## Status
 
 **Prototype**
 
-* `fbp-diff` can for give a primitive textual diff of node/connection/IIP changes
+* `fbp-diff` can for give a primitive textual diff of node/connection/IIP changes, from a .json or .fbp file
 * `fbp-git-diff` can lookup diffs of a graph stored in git
 
 ## Installing
