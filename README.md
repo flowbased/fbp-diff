@@ -44,7 +44,10 @@ Also see [./doc/braindump.md](./doc/braindump.md)
 
 * Implement diffing of graph properties
 * Implement diffing of exported in/outports
+* Add basic tests for textual diffing
 
 ### Later
 
 * Add a visual diffing tool
+* Add a --raw mode, which outputs the calculated diff as JSON
+
