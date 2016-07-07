@@ -12,8 +12,8 @@ function cleanup {
 }
 trap cleanup EXIT
 
-git show $FROM_REVISION:./graphs/ExtractExtra.json > $TEMP_DIR/from.json
-git show $TO_REVISION:./graphs/ExtractExtra.json > $TEMP_DIR/to.json
+git show $FROM_REVISION:$GRAPH_PATH > $TEMP_DIR/from.json
+git show $TO_REVISION:$GRAPH_PATH > $TEMP_DIR/to.json
 
 fbp-diff $TEMP_DIR/from.json $TEMP_DIR/to.json
 
