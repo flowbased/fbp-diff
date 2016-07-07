@@ -5,7 +5,6 @@ TO_REVISION=$2
 GRAPH_PATH=$3
 
 TEMP_DIR=`mktemp -d fbp-git-diff-XXXX`
-echo $TEMP_DIR
 
 function cleanup {
   rm -rf "$TEMP_DIR"
