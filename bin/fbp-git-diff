@@ -1,0 +1,21 @@
+#!/bin/bash
+
+FROM_REVISION=$1
+TO_REVISION=$2
+GRAPH_PATH=$3
+
+TEMP_DIR=`mktemp -d fbp-git-diff-XXXX`
+echo $TEMP_DIR
+
+function cleanup {
+  rm -rf "$TEMP_DIR"
+}
+trap cleanup EXIT
+
+git show $FROM_REVISION:./graphs/ExtractExtra.json > $TEMP_DIR/from.json
+git show $TO_REVISION:./graphs/ExtractExtra.json > $TEMP_DIR/to.json
+
+fbp-diff $TEMP_DIR/from.json $TEMP_DIR/to.json
+
+
+
