@@ -35,7 +35,8 @@ Showing meta-data changes (or only 'real changes') should probably be an option.
 
 How should these lines be sorted?
 Ideally the adjacency of graph would be taken into account, so related changes are grouped together.
-Most changes are relative to a particular *node*, so sorting by affected source/target might be an OK starting point.
+Most changes are relative to a particular *node*, so sorting by affected source/target
+might be an OK starting point.
 It is also relatively common for graphs to 'flow' left-to-right, so that is ideally respected too.
 
 ## summary mode:
@@ -69,16 +70,38 @@ Would then be beneficial if Journal and Graph was split out of NoFlo...
 Other possibly useful libs
 
 * Graph theory and visualization, [Cytoscape](http://js.cytoscape.org/#demos)
-
+* [JSON Diff](https://github.com/zgrossbart/jdd)
 
 # git integration
 
-Custom git diff/merge tools hwoto: [1](http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program)
-Might need some sniffing capability to determine whether a given .json file is a FBP graph or not. `fbp-validate`?
+## git diff/merge tools
+
+Custom git diff/merge tools howto: [1](http://stackoverflow.com/questions/255202/how-do-i-view-git-diff-output-with-a-visual-diff-program)
+Might need some sniffing capability to determine whether a given .json file is a FBP graph or not. `fbp-validate` or `fbp-is-graph`?
+
+## attach diff in git commit
 
 Let Flowhub store a textual diff and/or summary into git commits?
 Appended in message and/or a [git note](https://www.kernel.org/pub/software/scm/git/docs/git-notes.html).
-Could be useful to look at git logs/history and understand changes without using fbp-diff, for instance in Github
+Could be useful to look at git logs/history and understand changes without using fbp-diff locally, for instance in Github.
+
+## git-aware diff/log
+
+Could take two git version references (SHA/tag/branch), and optionally a graph path.
+Would then lookup the changes in git,
+
+Being able to create diffs for all changesets in some bigger FBP-using projects
+is good indicator that a wide range of inputs works. A `git log` like command,
+could walk every commit (in a range) like this.
+
+## Github PR bot
+
+Reviewing pull/merge requests important case when wanting to see a diff.
+This is often done on Github, which has [API for pull requests](https://developer.github.com/v3/pulls/).
+Could use this to create a "bot" which follows PRs, and automatically posts a diff for changes which affects FBP graphs.
+If the comment added by bot is on the diff itself, (rather than in PR conversation)
+it should also be automatically get hidden when the file diff has changed.
+Need to re-create the fbp-diff in this case.
 
 # Ui/visualization
 
@@ -142,14 +165,13 @@ and `guv` autoscaling config for instance.
 
 # .fbp roundtrips?
 
-Currently the FBP library parses .fbp into a JSON representation, but there is no .fbp renderer.
-It would be nice to allow to get a patched .fbp file as .fbp, with minimal changes.
+As of June 2016 there is a basic `fbp.serialize` for rendering a graph to FBP. It ignores metadata and groups however.
+It would be nice to allow to get a patched .fbp file as .fbp, *with minimal changes*.
 
-Also, during parsing, some information is currently lost. Notably comments, and formatting
+Some information is currently lost during parsing. Notably comments, and formatting
 (whether connections are on one line, split over multiple, where component instance is specified...).
 There is also no group concept, though probably one could have based on text-blocks delimited by a whitespace-only line?
 Comments could maybe be put in group, node, connection metadata?
-
 
 # Merge support?
 
