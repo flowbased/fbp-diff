@@ -1,11 +1,63 @@
 
+processChanges = (from, to) ->
+  changes = []
+
+  fromNames = Object.keys from
+  toNames = Object.keys to
+
+  for name, process of from
+    if name not in toNames
+      changes.push
+        type: 'process-removed'
+        data:
+          name: name
+          process: process
+
+  for name, process of to
+    if name in fromNames
+      oldComponent = from[name].component
+      if process.component != oldComponent
+        changes.push
+          type: 'process-component-changed'
+          data:
+            component: component
+          previous:
+            component: oldComponent
+      # TODO: implement diffing of node metadata. Per top-level key?
+    else
+      changes.push
+        type: 'process-added'
+        data:
+          name: name
+          process: process
+
+connectionChanges = (from, to) ->
+  # FIXME: implement diffing of edges
+  # FIXME: implement diffing of IIPs
+  # TODO: implement diffing of connection metadata. Per top-level key?
+  return []
+
 # calculate a list of changes between @from and @to
+# this is just the basics/dry-fact view. Any heuristics etc is applied afterwards
 calculateDiff = (from, to) ->
-  return [] # FIXME: implement diffing
+  changes = []
+
+  # nodes added/removed
+  changes = changes.concat calculateProcessChanges from.processes, to.processes
+
+  # edges added/removed
+  changes = changes.concat connectionChanges from.connections, to.connections
+  
+  # FIXME: diff graph properties
+  # FIXME: diff exported inport/outport changes
+  # TODO: support diffing of groups
+
+  return []
 
 formatDiffTextual = (diff) ->
   return "" # FIXME: implement formatting
 
+# TODO: validate graph against schema
 readGraph = (contents, type) ->
   fbp = require 'fbp'
   if type == 'fbp'
