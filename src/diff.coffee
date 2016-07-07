@@ -142,7 +142,7 @@ calculateDiff = (from, to) ->
 formatEdge = (e) ->
   srcIndex = if e.src.index then "[#{e.src.index}]" else ""
   tgtIndex = if e.tgt.index then "[#{e.tgt.index}]" else ""
-  return "#{e.src.process} #{e.src.port} -> #{e.tgt.port} #{e.tgt.process}"
+  return "#{e.src.process} #{e.src.port}#{srcIndex} -> #{e.tgt.port}#{tgtIndex} #{e.tgt.process}"
 formatIIP = (e) ->
   tgtIndex = if e.tgt.index then "[#{e.tgt.index}]" else ""
   return "#{JSON.stringify(e.data)} -> #{e.tgt.port}#{tgtIndex} #{e.tgt.process}"
