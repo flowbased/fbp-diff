@@ -1,6 +1,6 @@
 {
   "name": "fbp-diff",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Diff tool for FBP graphs",
   "main": "index.js",
   "directories": {
