@@ -6,6 +6,10 @@
   "directories": {
     "doc": "doc"
   },
+  "bin": {
+    "fbp-diff": "./bin/fbp-diff",
+    "fbp-git-diff": "./bin/fbp-git-diff"
+  },
   "scripts": {
     "test": "mocha  --reporter spec --compilers .coffee:coffee-script/register spec/*.coffee"
   },
