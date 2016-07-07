@@ -11,10 +11,12 @@ function cleanup {
 }
 trap cleanup EXIT
 
-git show $FROM_REVISION:$GRAPH_PATH > $TEMP_DIR/from.json
-git show $TO_REVISION:$GRAPH_PATH > $TEMP_DIR/to.json
+GRAPH_FILE=`basename ${GRAPH_PATH}`
 
-fbp-diff $TEMP_DIR/from.json $TEMP_DIR/to.json
+git show $FROM_REVISION:$GRAPH_PATH > $TEMP_DIR/from.$GRAPH_FILE
+git show $TO_REVISION:$GRAPH_PATH > $TEMP_DIR/to.$GRAPH_FILE
+
+fbp-diff $TEMP_DIR/from.$GRAPH_FILE $TEMP_DIR/to.$GRAPH_FILE
 
 
 
