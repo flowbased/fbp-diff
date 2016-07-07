@@ -47,7 +47,7 @@ isEdge = (conn) ->
 connEquals = (a, b) ->
   return a.process == b.process and a.port == b.port and a.index == b.index
 edgeEquals = (a, b) ->
-  return connEquals(a.tgt, b.tgt) and connEquals(a.src, b.tgt)
+  return connEquals(a.tgt, b.tgt) and connEquals(a.src, b.src)
 
 connectionChanges = (from, to) ->
   # A connection can either be an edge (between two processes), or an IIP
