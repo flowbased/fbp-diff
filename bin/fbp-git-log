@@ -18,4 +18,5 @@ do
     echo fbp-diff for $GRAPHS_GLOB
     echo
     fbp-git-diff $REV^ $REV $GRAPHS_GLOB
+    echo
 done
