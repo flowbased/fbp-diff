@@ -27,11 +27,11 @@ Alternative, install globally using NPM
 
     npm install -g fbp-diff
 
-## Usage
+## Command-line usage
 
 Add the command-line tools to PATH (not needed if installed globally)
 
-    export PATH=./node_modulex/.bin:$PATH
+    export PATH=./node_modules/.bin:$PATH
 
 Diff between two graphs
 
