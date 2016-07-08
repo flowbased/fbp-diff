@@ -41,6 +41,21 @@ Diff between two versions of a graph stored in git
 
     fbp-git-diff master otherbranch ./graphs/MyGraph.json
 
+## API Usage
+
+fbp-diff also provides a JavaScript API.
+
+    var fbpDiff = require('fbp-diff');
+    var options = {
+      // fromFormat: 'object', // don't parse fromGraph, it is a JS object of a graph (default)
+      // toFormat: 'json', // parse toGraph .json format
+      format: 'fbp' // specify toFormat and fromFormat in one go
+    };
+    var fromGraph = "";
+    var toGraph = "";
+    var diff = fbpDiff.diff(fromGraph, toGraph, options);
+    console.log(diff);
+
 ## TODO
 
 Also see [./doc/braindump.md](./doc/braindump.md)
