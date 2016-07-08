@@ -45,16 +45,18 @@ Diff between two versions of a graph stored in git
 
 fbp-diff also provides a JavaScript API.
 
-    var fbpDiff = require('fbp-diff');
-    var options = {
-      // fromFormat: 'object', // don't parse fromGraph, it is a JS object of a graph (default)
-      // toFormat: 'json', // parse toGraph .json format
-      format: 'fbp' // specify toFormat and fromFormat in one go
-    };
-    var fromGraph = "'hello' -> concat(Concatinator)\n'world' -> concat -> IN (Print)";
-    var toGraph = "'hello' -> IN (Print)";
-    var diff = fbpDiff.diff(fromGraph, toGraph, options);
-    console.log(diff);
+```javascript
+var fbpDiff = require('fbp-diff');
+var options = {
+  // fromFormat: 'object', // don't parse fromGraph, it is a JS object of a graph (default)
+  // toFormat: 'json', // parse toGraph .json format
+  format: 'fbp' // specify toFormat and fromFormat in one go
+};
+var fromGraph = "'hello' -> concat(Concatinator)\n'world' -> concat -> IN (Print)";
+var toGraph = "'hello' -> IN (Print)";
+var diff = fbpDiff.diff(fromGraph, toGraph, options);
+console.log(diff);
+```
 
 ## TODO
 
