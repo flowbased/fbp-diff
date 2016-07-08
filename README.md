@@ -51,8 +51,8 @@ fbp-diff also provides a JavaScript API.
       // toFormat: 'json', // parse toGraph .json format
       format: 'fbp' // specify toFormat and fromFormat in one go
     };
-    var fromGraph = "";
-    var toGraph = "";
+    var fromGraph = "'hello' -> concat(Concatinator)\n'world' -> concat -> IN (Print)";
+    var toGraph = "'hello' -> IN (Print)";
     var diff = fbpDiff.diff(fromGraph, toGraph, options);
     console.log(diff);
 
