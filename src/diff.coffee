@@ -286,6 +286,8 @@ readGraph = (contents, type) ->
   fbp = require 'fbp'
   if type == 'fbp'
     graph = fbp.parse contents
+  else if type == 'object'
+    graph = contents
   else
     graph = JSON.parse contents
 
@@ -297,6 +299,20 @@ readGraph = (contents, type) ->
 
 # TODO: support parsing up a diff from the textual output format?
 # Mostly useful if/when one can apply diff as a patch
+
+# diff two graphs
+exports.diff = (from, to, options) ->
+  options.format = 'object' if not options.format? 
+  options.fromFormat = options.format if not options.fromFormat?
+  options.toFormat = options.format if not options.toFormat?
+
+  f = readGraph from, options.fromFormat
+  t = readGraph to, options.toFormat
+
+  diff = calculateDiff f, t
+  out = formatDiffTextual diff
+
+  return out
 
 # node.js only
 readGraphFile = (filepath, callback) ->
@@ -312,6 +328,18 @@ readGraphFile = (filepath, callback) ->
       return callback e
     return callback null, graph
 
+diffFiles = (fromPath, toPath, options, callback) ->
+  readGraphFile fromPath, (err, fromGraph) ->
+    return callback err if err
+    readGraphFile toPath, (err, toGraph) ->
+      return callback err if err
+
+      options.format = 'object' # already loaded
+      out = exports.diff fromGraph, toGraph, options
+      return callback null, out
+
+exports.diffFiles = diffFiles
+
 exports.main = main = () ->
   [_node, _script, from, to] = process.argv
 
@@ -319,11 +347,6 @@ exports.main = main = () ->
     throw err if err
     console.log output
 
-  readGraphFile from, (err, fromGraph) ->
-    return callback err if err
-    readGraphFile to, (err, toGraph) ->
-      return callback err if err
+  options = {}
+  return diffFiles from, to, options, callback
 
-      diff = calculateDiff fromGraph, toGraph
-      out = formatDiffTextual diff
-      console.log out
