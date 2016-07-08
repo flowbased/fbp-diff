@@ -8,7 +8,8 @@
   },
   "bin": {
     "fbp-diff": "./bin/fbp-diff",
-    "fbp-git-diff": "./bin/fbp-git-diff"
+    "fbp-git-diff": "./bin/fbp-git-diff",
+    "fbp-git-log": "./bin/fbp-git-log"
   },
   "scripts": {
     "test": "mocha  --reporter spec --compilers .coffee:coffee-script/register spec/*.coffee"

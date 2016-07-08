@@ -1,0 +1,21 @@
+#!/bin/bash -e
+
+REVISION_RANGE=$1
+GRAPHS_GLOB=$2
+
+TEMP_DIR=`mktemp -d fbp-git-diff-XXXX`
+
+function cleanup {
+  rm -rf "$TEMP_DIR"
+}
+trap cleanup EXIT
+
+REVISIONS=`git log --pretty=oneline $REVISION_RANGE -- $GRAPHS_GLOB | awk '{print $1}'`
+for REV in $REVISIONS
+do
+    git show --no-patch $REV
+    echo
+    echo fbp-diff for $GRAPHS_GLOB
+    echo
+    fbp-git-diff $REV^ $REV $GRAPHS_GLOB
+done
