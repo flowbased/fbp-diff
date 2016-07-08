@@ -2,6 +2,10 @@
 fbpDiff = require '../'
 chai = require 'chai'
 
+indent = (text, idn) ->
+  indented = idn + text.replace /\n/gm, "\n#{idn}"
+  return indented
+
 testExample = (testcase) ->
   options =
     format: testcase.format or 'fbp'
@@ -13,6 +17,7 @@ testExample = (testcase) ->
   it 'diff should equal expected', ->
     expected = testcase.diff.trim()
     chai.expect(diff).to.equal expected
+    console.log indent diff, '\t'
 
 loadTestCases = () ->
   # currently node.js only
