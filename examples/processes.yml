@@ -1,0 +1,17 @@
+'added process':
+  format: 'fbp'
+  from: |
+    'default' -> IN read(ReadSomething)
+  to: |
+    'default' -> IN read(ReadSomething)
+    unconnected(Frobnitzer)
+  diff: "+ unconnected(Frobnitzer)"
+
+'removed process':
+  format: 'fbp'
+  from: |
+    'default' -> IN read(ReadSomething)
+    unconnected(Frobnitzer)
+  to: |
+    'default' -> IN read(ReadSomething)
+  diff: "- unconnected(Frobnitzer)"
