@@ -142,6 +142,12 @@ Some changes might also apply to other, similar graphs: Starting to look more li
 Might require generalizations though, like `-+ *(Component) *(NewComponent)` to match regardless of node name.
 Some more refactoring ideas found here: https://github.com/jonnor/projects/tree/master/fbp-meta
 
+Each refactoring could be represented as a object, with:
+
+* a match rule. Determining which things to change
+* a transformation. The change to make for each match
+* (maybe) a search context, for which (subset) of data to try matches in
+
 # Merge conflicts
 
 In text-based diffing, a merge conflict occurs if two changes are done to the same lines of text/code.
