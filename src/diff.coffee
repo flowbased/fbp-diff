@@ -270,7 +270,6 @@ formatChangeTextual = (change) ->
     when 'edge-removed' then "- #{formatEdge(d)}"
     when 'iip-added' then "+ #{formatIIP(d)}"
     when 'iip-removed' then "- #{formatIIP(d)}"
-    when 'iip-added' then "+ #{formatIIP(d)}"
     when 'exported-port-added' then "+ #{formatExport(change.kind, d.target, d.name)}"
     when 'exported-port-removed' then "- #{formatExport(change.kind, d.target, d.name)}"
     when 'exported-port-target-changed' then ". #{formatExport(change.kind, d.target, d.name)} was #{formatExport(change.kind, old.target, d.name)}"
