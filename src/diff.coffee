@@ -305,10 +305,7 @@ readGraph = (contents, type, options) ->
 
 # diff two graphs
 exports.diff = (from, to, options) ->
-  options.format = 'object' if not options.format? 
-  options.fromFormat = options.format if not options.fromFormat?
-  options.toFormat = options.format if not options.toFormat?
-  options.caseSensitive = true if not options.caseSensitive?
+  options = normalizeOptions options
 
   f = readGraph from, options.fromFormat, options
   t = readGraph to, options.toFormat, options
@@ -317,6 +314,14 @@ exports.diff = (from, to, options) ->
   out = formatDiffTextual diff
 
   return out
+
+normalizeOptions = (options) ->
+  options = clone options
+  options.format = 'object' if not options.format?
+  options.fromFormat = options.format if not options.fromFormat?
+  options.toFormat = options.format if not options.toFormat?
+  options.caseSensitive = true if not options.caseSensitive?
+  return options
 
 # node.js only
 readGraphFile = (filepath, options, callback) ->
@@ -327,7 +332,7 @@ readGraphFile = (filepath, options, callback) ->
   fs.readFile filepath, { encoding: 'utf-8' }, (err, contents) ->
     return callback err if err
     try
-      graph = readGraph contents, type
+      graph = readGraph contents, type, options
     catch e
       return callback e
     return callback null, graph
@@ -352,5 +357,6 @@ exports.main = main = () ->
     console.log output
 
   options = {}
+  options = normalizeOptions options
   return diffFiles from, to, options, callback
 
