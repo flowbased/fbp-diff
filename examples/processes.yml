@@ -1,5 +1,4 @@
 'added process':
-  format: 'fbp'
   from: |
     'default' -> IN read(ReadSomething)
   to: |
@@ -8,10 +7,18 @@
   diff: "+ unconnected(Frobnitzer)"
 
 'removed process':
-  format: 'fbp'
   from: |
     'default' -> IN read(ReadSomething)
     unconnected(Frobnitzer)
   to: |
     'default' -> IN read(ReadSomething)
   diff: "- unconnected(Frobnitzer)"
+
+'change component name':
+  from: |
+    'default' -> IN read(ReadSomething)
+    unconnected(Frobnitzer)
+  to: |
+    'default' -> IN read(ReadSomething)
+    unconnected(AntiFrobber)
+  diff: "$component unconnected(AntiFrobber) was (Frobnitzer)"
