@@ -128,6 +128,7 @@ portChanges = (from, to, kind) ->
 
   fromNames = Object.keys from
   toNames = Object.keys to
+
   for name, target of from
     existsNow = name in toNames
     if not existsNow
@@ -177,10 +178,10 @@ removeByPredicate = (array, predicate) ->
   return removed
 
 findRenamedExports = (changes, kind) ->
-  rewritten = clone changes
+  rewritten = changes
 
   findTargets = (type) ->
-    c = changes.filter (c) -> c.type == type and kind == kind
+    c = changes.filter (c) -> c.type == type and c.kind == kind
     t = c.map (c) -> return "#{c.process}.#{c.port}"
     res =
       changes: c
@@ -192,35 +193,36 @@ findRenamedExports = (changes, kind) ->
   removed = findTargets 'exported-port-removed'
 
   for target, targetIdx in removed.targets
-    addedIdx = added.targets.find target
+    addedIdx = added.targets.indexOf target
     if addedIdx != -1
       # both added and removed exported port, targeting the same node+port was -> a rename
       a = added.changes[addedIdx]
-      r = added.changes[removedIdx]
+      r = removed.changes[targetIdx]
 
-      console.log a, '\n', r
-
-      if not connEquals(a.data.target, b.data.target)
+      if not connEquals(a.data.target, r.data.target)
         throw new Error "Sanity check failed, rename match did not have same target"
 
       # rewrite changes
       rewritten = removeByPredicate rewritten, (item) ->
         exportedPort = (item.type == 'exported-port-added' or item.type == 'exported-port-removed')
-        targetEquals = connEquals a.data.target, item.target
+        targetEquals = connEquals a.data.target, item.data.target
         return item.kind == kind and exportedPort and targetEquals
 
       rewritten.push
         type: 'exported-port-renamed'
         kind: kind
-        data:
-          target: a.target
+        data: a.data
+        previous:
+          name: r.data.name
 
   return rewritten
   
 applyHeuristics = (changes) ->
-  withHeuristics = findRenamedExports changes
+  rewritten = clone changes
+  rewritten = findRenamedExports(rewritten, 'inport')
+  rewritten = findRenamedExports(rewritten, 'outport')
 
-  return withHeuristics
+  return rewritten
 
 # calculate a list of changes between @from and @to
 calculateDiff = (from, to) ->
@@ -243,7 +245,7 @@ calculateDiff = (from, to) ->
 
   diff = 
     raw: changes
-    changes: changes # FIXME: apply heuristics
+    changes: applyHeuristics changes
   return diff
 
 formatEdge = (e) ->
@@ -272,6 +274,7 @@ formatChangeTextual = (change) ->
     when 'exported-port-added' then "+ #{formatExport(change.kind, d.target, d.name)}"
     when 'exported-port-removed' then "- #{formatExport(change.kind, d.target, d.name)}"
     when 'exported-port-target-changed' then ". #{formatExport(change.kind, d.target, d.name)} was #{formatExport(change.kind, old.target, d.name)}"
+    when 'exported-port-renamed' then ".rename #{formatExport(change.kind, d.target, d.name)} was #{formatExport(change.kind, d.target, old.name)}"
     else
       throw new Error "Cannot format unsupported change type: #{change.type}"
 

@@ -16,7 +16,6 @@
     'default' -> IN read(ReadSomething)
   diff: "- INPORT=read.in:filename"   #FIXME casing
 'renamed inport':
-  skip: true
   format: 'fbp'
   from: |
     INPORT=read.IN:FILENAME
@@ -24,4 +23,4 @@
   to: |
     INPORT=read.IN:NEWFILENAME
     'default' -> IN read(ReadSomething)
-  diff: "- INPORT=read.IN:FILENAME"
+  diff: ".rename INPORT=read.in:newfilename was INPORT=read.in:filename"

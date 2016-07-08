@@ -5,11 +5,11 @@ chai = require 'chai'
 testExample = (testcase) ->
   options =
     format: testcase.format or 'fbp'
+  diff = ''
   it 'should produce a diff', ->
     diff = fbpDiff.diff testcase.from, testcase.to, options
     chai.expect(diff).to.be.a 'string'
   it 'diff should equal expected', ->
-    diff = fbpDiff.diff testcase.from, testcase.to, options
     chai.expect(diff).to.equal testcase.diff
 
 loadTestCases = () ->
