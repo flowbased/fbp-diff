@@ -1,0 +1,36 @@
+'added 1 edge':
+  format: 'fbp'
+  from: |
+    'default' -> IN read(ReadSomething)
+    unconnected(Frobnitzer)
+  to: |
+    'default' -> IN read(ReadSomething)
+    read OUT -> IN unconnected(Frobnitzer)
+  diff: "+ read out -> in unconnected"
+
+'removed 1 edge':
+  format: 'fbp'
+  from: |
+    'default' -> IN read(ReadSomething)
+    read OUT -> IN unconnected(Frobnitzer)
+  to: |
+    'default' -> IN read(ReadSomething)
+    unconnected(Frobnitzer)
+  diff: "- read out -> in unconnected"
+
+'add a string IIP':
+  format: 'fbp'
+  from: |
+    read(ReadSomething)
+  to: |
+    'myiip' -> read(ReadSomething)
+  diff: '+ "myiip" -> in read'
+
+'remove a string IIP':
+  format: 'fbp'
+  from: |
+    'myiip' -> read(ReadSomething)
+  to: |
+    read(ReadSomething)
+  diff: '- "myiip" -> in read'
+
