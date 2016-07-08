@@ -1,0 +1,44 @@
+'ingress-table-uno-compat':
+  _url: https://github.com/c-base/ingress-table/commit/afb96e195cb8428b87f34da3c36f4b80240f463b
+  from: |
+    # @runtime microflo
+
+    INPORT=ledchain.IN:PIXEL
+    INPORT=ledchain.SHOW:SHOW
+    OUTPORT=ledchain.PIXELSET:PIXELSET
+    OUTPORT=ledchain.READY:READY
+    OUTPORT=ledchain.SHOWN:SHOWN
+
+    #'2' -> PINDATA ledchain(LedChainWS)
+    #'3' -> PINCLK ledchain
+    'true' -> HWSPI ledchain(LedChainWS)
+    '50' -> PIXELS ledchain
+    #'[37, "0x404040"]' -> IN ledchain
+    #'true' -> SHOW ledchain
+
+    # Workaround to be able to get the outport data
+    # MicroFlo currently subscribe to packets with no destination...
+    ledchain SHOWN -> IN dummy(Forward)
+    ledchain READY -> IN dummyB(Forward)
+  to: |
+    # @runtime microflo
+
+    INPORT=ledchain.IN:PIXEL
+    INPORT=ledchain.SHOW:SHOW
+    OUTPORT=ledchain.READY:READY
+    OUTPORT=ledchain.SHOWN:SHOWN
+
+    '2' -> PINDATA ledchain(LedChainWS)
+    '3' -> PINCLK ledchain
+    '50' -> PIXELS ledchain
+    #'true' -> SHOW ledchain
+
+    # Workaround to be able to get the outport data
+    # MicroFlo currently subscribe to packets with no destination...
+    ledchain SHOWN -> IN dummy(Forward)
+    ledchain READY -> IN dummyB(Forward)
+  diff: |
+    - "true" -> hwspi ledchain
+    + "2" -> pindata ledchain
+    + "3" -> pinclk ledchain
+    - OUTPORT=ledchain.pixelset:pixelset
