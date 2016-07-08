@@ -161,9 +161,70 @@ portChanges = (from, to, kind) ->
 
   return changes
 
+removeByPredicate = (array, predicate) ->
+  removeIndices = []
+  for item, idx in array
+    removeIndices.push idx if predicate(item, idx, array)
+
+  removed = []
+  for item, idx in array
+    if idx in removeIndices
+      # removed, don't include
+    else
+      removed.push item
+
+  return removed
+
+findRenamedExports = (changes, kind) ->
+  rewritten = clone changes
+
+  findTargets = (type) ->
+    c = changes.filter (c) -> c.type == type and kind == kind
+    t = c.map (c) -> return "#{c.process}.#{c.port}"
+    res =
+      changes: c
+      targets: t
+    return res
+
+
+  added = findTargets 'exported-port-added'
+  removed = findTargets 'exported-port-removed'
+
+  for target, targetIdx in removed.targets
+    addedIdx = added.targets.find target
+    if addedIdx != -1
+      # both added and removed exported port, targeting the same node+port was -> a rename
+      a = added.changes[addedIdx]
+      r = added.changes[removedIdx]
+
+      console.log a, '\n', r
+
+      if not connEquals(a.data.target, b.data.target)
+        throw new Error "Sanity check failed, rename match did not have same target"
+
+      # rewrite changes
+      rewritten = removeByPredicate rewritten, (item) ->
+        exportedPort = (item.type == 'exported-port-added' or item.type == 'exported-port-removed')
+        targetEquals = connEquals a.data.target, item.target
+        return item.kind == kind and exportedPort and targetEquals
+
+      rewritten.push
+        type: 'exported-port-renamed'
+        kind: kind
+        data:
+          target: a.target
+
+  return rewritten
+  
+applyHeuristics = (changes) ->
+  withHeuristics = findRenamedExports changes
+
+  return withHeuristics
+
 # calculate a list of changes between @from and @to
-# this is just the basics/dry-fact view. Any heuristics etc is applied afterwards
 calculateDiff = (from, to) ->
+
+  # this is just the basics/dry-fact view. Any heuristics etc is applied afterwards
   changes = []
 
   # nodes added/removed
@@ -180,7 +241,8 @@ calculateDiff = (from, to) ->
   # TODO: support diffing of groups
 
   diff = 
-    changes: changes
+    raw: changes
+    changes: applyHeuristics changes
   return diff
 
 formatEdge = (e) ->
@@ -193,6 +255,7 @@ formatIIP = (e) ->
 formatExport = (type, tgt, name) ->
   return "#{type.toUpperCase()}=#{tgt.process}.#{tgt.port}:#{name}"
 
+# TODO: include connection index for edges and IIPs?
 formatChangeTextual = (change) ->
   d = change.data
   old = change.previous
