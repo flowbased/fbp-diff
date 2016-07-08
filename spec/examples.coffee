@@ -8,9 +8,11 @@ testExample = (testcase) ->
   diff = ''
   it 'should produce a diff', ->
     diff = fbpDiff.diff testcase.from, testcase.to, options
+    diff = diff.trim()
     chai.expect(diff).to.be.a 'string'
   it 'diff should equal expected', ->
-    chai.expect(diff).to.equal testcase.diff
+    expected = testcase.diff.trim()
+    chai.expect(diff).to.equal expected
 
 loadTestCases = () ->
   # currently node.js only
@@ -35,7 +37,7 @@ tests = loadTestCases()
 
 describe 'Examples', ->
   it 'should exist', ->
-    chai.expect(tests).to.have.length.above 1
+    chai.expect(tests).to.have.length.above 13
 
   for testcase in tests
     describeUnlessSkipped = if testcase.skip then describe.skip else describe
