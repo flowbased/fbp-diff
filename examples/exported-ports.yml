@@ -1,12 +1,11 @@
 'added inport':
-  skip: true
   format: 'fbp'
   from: |
     'default' -> IN read(ReadSomething)
   to: |
     INPORT=read.IN:FILENAME
     'default' -> IN read(ReadSomething)
-  diff: "+ INPORT=read.in:filename\n"
+  diff: "+ INPORT=read.in:filename"
 'removed inport':
   format: 'fbp'
   from: |
