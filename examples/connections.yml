@@ -6,7 +6,7 @@
   to: |
     'default' -> IN read(ReadSomething)
     read OUT -> IN unconnected(Frobnitzer)
-  diff: "+ read out -> in unconnected"
+  diff: "+ read OUT -> IN unconnected"
 
 'removed 1 edge':
   format: 'fbp'
@@ -16,7 +16,7 @@
   to: |
     'default' -> IN read(ReadSomething)
     unconnected(Frobnitzer)
-  diff: "- read out -> in unconnected"
+  diff: "- read OUT -> IN unconnected"
 
 'add a string IIP':
   format: 'fbp'
@@ -24,7 +24,7 @@
     read(ReadSomething)
   to: |
     'myiip' -> read(ReadSomething)
-  diff: '+ "myiip" -> in read'
+  diff: '+ "myiip" -> IN read'
 
 'remove a string IIP':
   format: 'fbp'
@@ -32,5 +32,5 @@
     'myiip' -> read(ReadSomething)
   to: |
     read(ReadSomething)
-  diff: '- "myiip" -> in read'
+  diff: '- "myiip" -> IN read'
 

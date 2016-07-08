@@ -285,10 +285,10 @@ formatDiffTextual = (diff, options) ->
   return lines.join('\n')
 
 # TODO: validate graph against schema
-readGraph = (contents, type) ->
+readGraph = (contents, type, options) ->
   fbp = require 'fbp'
   if type == 'fbp'
-    graph = fbp.parse contents
+    graph = fbp.parse contents, { caseSensitive: options.caseSensitive }
   else if type == 'object'
     graph = contents
   else
@@ -308,9 +308,10 @@ exports.diff = (from, to, options) ->
   options.format = 'object' if not options.format? 
   options.fromFormat = options.format if not options.fromFormat?
   options.toFormat = options.format if not options.toFormat?
+  options.caseSensitive = true if not options.caseSensitive?
 
-  f = readGraph from, options.fromFormat
-  t = readGraph to, options.toFormat
+  f = readGraph from, options.fromFormat, options
+  t = readGraph to, options.toFormat, options
 
   diff = calculateDiff f, t
   out = formatDiffTextual diff
@@ -318,7 +319,7 @@ exports.diff = (from, to, options) ->
   return out
 
 # node.js only
-readGraphFile = (filepath, callback) ->
+readGraphFile = (filepath, options, callback) ->
   fs = require 'fs'
   path = require 'path'
 
@@ -332,9 +333,9 @@ readGraphFile = (filepath, callback) ->
     return callback null, graph
 
 diffFiles = (fromPath, toPath, options, callback) ->
-  readGraphFile fromPath, (err, fromGraph) ->
+  readGraphFile fromPath, options, (err, fromGraph) ->
     return callback err if err
-    readGraphFile toPath, (err, toGraph) ->
+    readGraphFile toPath, options, (err, toGraph) ->
       return callback err if err
 
       options.format = 'object' # already loaded

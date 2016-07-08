@@ -4,7 +4,7 @@
   to: |
     INPORT=read.IN:FILENAME
     'default' -> IN read(ReadSomething)
-  diff: "+ INPORT=read.in:filename"
+  diff: "+ INPORT=read.IN:FILENAME"
 
 'removed inport':
   from: |
@@ -12,16 +12,16 @@
     'default' -> IN read(ReadSomething)
   to: |
     'default' -> IN read(ReadSomething)
-  diff: "- INPORT=read.in:filename"   #FIXME casing
+  diff: "- INPORT=read.IN:FILENAME"
 
 'renamed inport':
   from: |
     INPORT=read.IN:FILENAME
     'default' -> IN read(ReadSomething)
   to: |
-    INPORT=read.IN:NEWFILENAME
+    INPORT=read.IN:newfilename
     'default' -> IN read(ReadSomething)
-  diff: ".rename INPORT=read.in:newfilename was INPORT=read.in:filename"
+  diff: ".rename INPORT=read.IN:newfilename was INPORT=read.IN:FILENAME"
 
 'added outport':
   from: |
@@ -31,7 +31,7 @@
     INPORT=read.IN:FILENAME
     OUTPORT=read.OUT:OUTPUT
     'default' -> IN read(ReadSomething)
-  diff: "+ OUTPORT=read.out:output"
+  diff: "+ OUTPORT=read.OUT:OUTPUT"
 
 'removed outport':
   from: |
@@ -43,7 +43,7 @@
     INPORT=read.IN:FILENAME
     OUTPORT=read.OUT:OUTPUT
     'default' -> IN read(ReadSomething)
-  diff: "- OUTPORT=read.error:error"   #FIXME casing
+  diff: "- OUTPORT=read.ERROR:ERROR"
 
 'change target of outport':
   from: |
@@ -54,4 +54,4 @@
     INPORT=read.IN:FILENAME
     OUTPORT=read.OUTPUT:OUTPUT
     'default' -> IN read(ReadSomething)
-  diff: ". OUTPORT=read.output:output was OUTPORT=read.out:output"   #FIXME casing
+  diff: ". OUTPORT=read.OUTPUT:OUTPUT was OUTPORT=read.OUT:OUTPUT"

@@ -64,7 +64,6 @@ Also see [./doc/braindump.md](./doc/braindump.md)
 
 * Implement diffing of graph properties
 * Implement basic grouping/heuristics/context to make the diff easier to understand
-* Fix inconsistencies in casing for port names
 
 ### Later
 

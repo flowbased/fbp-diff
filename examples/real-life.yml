@@ -38,7 +38,7 @@
     ledchain SHOWN -> IN dummy(Forward)
     ledchain READY -> IN dummyB(Forward)
   diff: |
-    - "true" -> hwspi ledchain
-    + "2" -> pindata ledchain
-    + "3" -> pinclk ledchain
-    - OUTPORT=ledchain.pixelset:pixelset
+    - "true" -> HWSPI ledchain
+    + "2" -> PINDATA ledchain
+    + "3" -> PINCLK ledchain
+    - OUTPORT=ledchain.PIXELSET:PIXELSET
