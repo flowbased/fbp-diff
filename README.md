@@ -48,7 +48,7 @@ Also see [./doc/braindump.md](./doc/braindump.md)
 ### version 0.1 "minimally useful"
 
 * Implement diffing of graph properties
-* Implement diffing of exported in/outports
+* Implement basic grouping/heuristics/context to make the diff easier to understand
 * Add basic tests for textual diffing
 
 ### Later
