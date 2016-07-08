@@ -120,6 +120,47 @@ connectionChanges = (from, to) ->
   # TODO: implement diffing of connection metadata. Per top-level key?
   return changes
 
+  # TODO: deduce when port was just renamed
+portChanges = (from, to, kind) ->
+  throw new Error "Unsupported exported port kind: #{kind}" if not (kind in ['inport', 'outport'])
+
+  changes = []
+
+  toNames = Object.keys to
+  for name, target of from
+    if not name in toNames
+      # removed
+      changes.push
+        type: "exported-port-removed"
+        kind: kind
+        data:
+          name: name
+          target: target
+
+  fromNames = Object.keys from
+  for name, target of to
+    if name in fromNames
+      fromTarget = from[name]
+      if not connEquals(target, fromTarget)
+        changes.push
+          type: "exported-port-target-changed"
+          kind: kind
+          data:
+            name: name
+            target: target
+          previous:
+            target: fromTarget
+    else
+      # added
+      changes.push
+        type: "exported-port-added"
+        kind: kind
+        data:
+          name: name
+          target: target
+
+  return changes
+
 # calculate a list of changes between @from and @to
 # this is just the basics/dry-fact view. Any heuristics etc is applied afterwards
 calculateDiff = (from, to) ->
@@ -131,8 +172,11 @@ calculateDiff = (from, to) ->
   # edges added/removed
   changes = changes.concat connectionChanges(from.connections, to.connections)
   
+  # exported port changes
+  changes = changes.concat portChanges(from.inports, to.inports, 'inport')
+  changes = changes.concat portChanges(from.outports, to.outports, 'outport')
+
   # FIXME: diff graph properties
-  # FIXME: diff exported inport/outport changes
   # TODO: support diffing of groups
 
   diff = 
@@ -146,6 +190,8 @@ formatEdge = (e) ->
 formatIIP = (e) ->
   tgtIndex = if e.tgt.index then "[#{e.tgt.index}]" else ""
   return "#{JSON.stringify(e.data)} -> #{e.tgt.port}#{tgtIndex} #{e.tgt.process}"
+formatExport = (type, tgt, name) ->
+  return "#{type.toUpperCase()}=#{tgt.process}.#{tgt.port}:#{name}"
 
 formatChangeTextual = (change) ->
   d = change.data
@@ -158,6 +204,10 @@ formatChangeTextual = (change) ->
     when 'edge-removed' then "- #{formatEdge(d)}"
     when 'iip-added' then "+ #{formatIIP(d)}"
     when 'iip-removed' then "- #{formatIIP(d)}"
+    when 'iip-added' then "+ #{formatIIP(d)}"
+    when 'exported-port-added' then "+ #{formatExport(change.kind, d.target, d.name)}"
+    when 'exported-port-removed' then "- #{formatExport(change.kind, d.target, d.name)}"
+    when 'exported-port-target-changed' then ". #{formatExport(change.kind, d.target, d.name)} was #{formatExport(change.kind, old.target, d.name)}"
     else
       throw new Error "Cannot format unsupported change type: #{change.type}"
 
@@ -172,9 +222,15 @@ formatDiffTextual = (diff, options) ->
 readGraph = (contents, type) ->
   fbp = require 'fbp'
   if type == 'fbp'
-    return fbp.parse contents
+    graph = fbp.parse contents
   else
-    return JSON.parse contents
+    graph = JSON.parse contents
+
+  # Normalize optional params
+  graph.inports = {} if not graph.inports?
+  graph.outports = {} if not graph.outports?
+
+  return graph
 
 # TODO: support parsing up a diff from the textual output format?
 # Mostly useful if/when one can apply diff as a patch
