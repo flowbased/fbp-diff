@@ -3,13 +3,13 @@ fbpDiff = require '../'
 chai = require 'chai'
 
 testExample = (testcase) ->
-  diff = ''
+  options =
+    format: testcase.format or 'fbp'
   it 'should produce a diff', ->
-    options =
-      format: testcase.format or 'fbp'
     diff = fbpDiff.diff testcase.from, testcase.to, options
     chai.expect(diff).to.be.a 'string'
   it 'diff should equal expected', ->
+    diff = fbpDiff.diff testcase.from, testcase.to, options
     chai.expect(diff).to.equal testcase.diff
 
 loadTestCases = () ->

@@ -126,9 +126,11 @@ portChanges = (from, to, kind) ->
 
   changes = []
 
+  fromNames = Object.keys from
   toNames = Object.keys to
   for name, target of from
-    if not name in toNames
+    existsNow = name in toNames
+    if not existsNow
       # removed
       changes.push
         type: "exported-port-removed"
@@ -137,7 +139,6 @@ portChanges = (from, to, kind) ->
           name: name
           target: target
 
-  fromNames = Object.keys from
   for name, target of to
     if name in fromNames
       fromTarget = from[name]
@@ -242,7 +243,7 @@ calculateDiff = (from, to) ->
 
   diff = 
     raw: changes
-    changes: applyHeuristics changes
+    changes: changes # FIXME: apply heuristics
   return diff
 
 formatEdge = (e) ->

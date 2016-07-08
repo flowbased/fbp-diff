@@ -1,12 +1,20 @@
-'removed inport':
+'added inport':
   skip: true
+  format: 'fbp'
+  from: |
+    'default' -> IN read(ReadSomething)
+  to: |
+    INPORT=read.IN:FILENAME
+    'default' -> IN read(ReadSomething)
+  diff: "+ INPORT=read.in:filename\n"
+'removed inport':
   format: 'fbp'
   from: |
     INPORT=read.IN:FILENAME
     'default' -> IN read(ReadSomething)
   to: |
     'default' -> IN read(ReadSomething)
-  diff: "- INPORT=read.IN:FILENAME"
+  diff: "- INPORT=read.in:filename"   #FIXME casing
 'renamed inport':
   skip: true
   format: 'fbp'
