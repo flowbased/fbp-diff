@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jonnor/fbp-diff.git"
+    "url": "git+https://github.com/flowbased/fbp-diff.git"
   },
   "keywords": [
     "FBP",
@@ -28,9 +28,9 @@
   "author": "Jon Nordby <jononor@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jonnor/fbp-diff/issues"
+    "url": "https://github.com/flowbased/fbp-diff/issues"
   },
-  "homepage": "https://github.com/jonnor/fbp-diff#readme",
+  "homepage": "https://github.com/flowbased/fbp-diff#readme",
   "devDependencies": {
     "chai": "^3.5.0",
     "coffee-script": "^1.10.0",
