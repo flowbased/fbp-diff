@@ -23,3 +23,27 @@
     INPORT=read.IN:NEWFILENAME
     'default' -> IN read(ReadSomething)
   diff: ".rename INPORT=read.in:newfilename was INPORT=read.in:filename"
+
+'added outport':
+  format: 'fbp'
+  from: |
+    INPORT=read.IN:FILENAME
+    'default' -> IN read(ReadSomething)
+  to: |
+    INPORT=read.IN:FILENAME
+    OUTPORT=read.OUT:OUTPUT
+    'default' -> IN read(ReadSomething)
+  diff: "+ OUTPORT=read.out:output"
+
+'removed outport':
+  format: 'fbp'
+  from: |
+    INPORT=read.IN:FILENAME
+    OUTPORT=read.OUT:OUTPUT
+    OUTPORT=read.ERROR:ERROR
+    'default' -> IN read(ReadSomething)
+  to: |
+    INPORT=read.IN:FILENAME
+    OUTPORT=read.OUT:OUTPUT
+    'default' -> IN read(ReadSomething)
+  diff: "- OUTPORT=read.error:error"   #FIXME casing
