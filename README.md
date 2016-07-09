@@ -7,9 +7,13 @@ FBP graphs are used to specify a [Flow-based programming (FBP)](https://en.wikip
 or dataflow program, consisting of processes and connections between them.
 The processes are nodes in the graph, and the connections are edges.
 
+## Related
+
+fbp-diff is used by [fbp-diffbot](https://github.com/jonnor/fbp-diffbot) to provide diffs on Github pull requests.
+
 ## Status
 
-**Prototype**
+**Minimally useful**
 
 * `fbp-diff` give a textual diff of node/connection/IIP changes, from a `.json` or `.fbp` file
 * `fbp-git-diff` can lookup diffs of a graph stored in `git`
