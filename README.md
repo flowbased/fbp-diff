@@ -3,8 +3,8 @@
 Diff utility for [FBP graphs](http://github.com/flowbased/fbp),
 making it easier to determine changes compare to using a naive textual diff of the JSON files.
 
-FBP graphs are used to specify a [Flow-based programming (FBP)]() or dataflow program,
-consisting of processes and connections between them.
+FBP graphs are used to specify a [Flow-based programming (FBP)](https://en.wikipedia.org/wiki/Flow-based_programming)
+or dataflow program, consisting of processes and connections between them.
 The processes are nodes in the graph, and the connections are edges.
 
 ## Status
