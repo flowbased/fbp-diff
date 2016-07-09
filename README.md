@@ -66,9 +66,12 @@ Also see [./doc/braindump.md](./doc/braindump.md)
 
 * Implement diffing of graph properties
 * Implement basic grouping/heuristics/context to make the diff easier to understand
+* Support diffing of process/edge metadata
+* Support diffing of connection order changes
 
 ### Later
 
 * Add a visual diffing tool
+* Add a color-based text formatter. Should support console+HTML/Markdown
 * Add a --raw mode, which outputs the calculated diff as JSON
 
