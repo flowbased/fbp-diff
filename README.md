@@ -11,9 +11,9 @@ The processes are nodes in the graph, and the connections are edges.
 
 **Prototype**
 
-* `fbp-diff` can for give a primitive textual diff of node/connection/IIP changes, from a .json or .fbp file
-* `fbp-git-diff` can lookup diffs of a graph stored in git
-* `fbp-git-log` can show the diffs for graph across many git revisions
+* `fbp-diff` give a textual diff of node/connection/IIP changes, from a `.json` or `.fbp` file
+* `fbp-git-diff` can lookup diffs of a graph stored in `git`
+* `fbp-git-log` can show the diffs for graph across many `git` revisions
 
 ## Installing
 
