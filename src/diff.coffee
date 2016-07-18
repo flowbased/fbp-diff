@@ -230,15 +230,15 @@ calculateDiff = (from, to) ->
   # this is just the basics/dry-fact view. Any heuristics etc is applied afterwards
   changes = []
 
+  # exported port changes
+  changes = changes.concat portChanges(from.inports, to.inports, 'inport')
+  changes = changes.concat portChanges(from.outports, to.outports, 'outport')
+
   # nodes added/removed
   changes = changes.concat processChanges(from.processes, to.processes)
 
   # edges added/removed
   changes = changes.concat connectionChanges(from.connections, to.connections)
-  
-  # exported port changes
-  changes = changes.concat portChanges(from.inports, to.inports, 'inport')
-  changes = changes.concat portChanges(from.outports, to.outports, 'outport')
 
   # FIXME: diff graph properties
   # TODO: support diffing of groups
