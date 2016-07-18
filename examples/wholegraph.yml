@@ -1,0 +1,63 @@
+'added whole graph as .fbp':
+  from: ""
+  to: |
+    INPORT=ledchain.IN:PIXEL
+    OUTPORT=ledchain.PIXELSET:PIXELSET
+    ledchain(LedChain) SHOWN -> IN dummy(Forward)
+    ledchain READY -> IN dummyB(Forward)
+  diff: |
+    + INPORT=ledchain.IN:PIXEL
+    + OUTPORT=ledchain.PIXELSET:PIXELSET
+    + ledchain(LedChain)
+    + dummy(Forward)
+    + dummyB(Forward)
+    + ledchain SHOWN -> IN dummy
+    + ledchain READY -> IN dummyB
+
+'removed whole graph as .fbp':
+  from: |
+    INPORT=ledchain.IN:PIXEL
+    OUTPORT=ledchain.PIXELSET:PIXELSET
+    ledchain(LedChain) SHOWN -> IN dummy(Forward)
+    ledchain READY -> IN dummyB(Forward)
+  to: ""
+  diff: |
+    - INPORT=ledchain.IN:PIXEL
+    - OUTPORT=ledchain.PIXELSET:PIXELSET
+    - ledchain(LedChain)
+    - dummy(Forward)
+    - dummyB(Forward)
+    - ledchain SHOWN -> IN dummy
+    - ledchain READY -> IN dummyB
+
+'added whole graph as .json':
+  format: json
+  from: ""
+  to: |
+    {
+      "processes": {
+        "foo": { "component": "Bar" }
+      },
+      "connections": [
+        { "data": "my iip", "tgt": { "port": "IN", "process": "foo" } }
+      ]
+    }
+  diff: |
+    + foo(Bar)
+    + "my iip" -> IN foo
+
+'removed whole graph as .json':
+  format: json
+  from: |
+    {
+      "processes": {
+        "foo": { "component": "Bar" }
+      },
+      "connections": [
+        { "data": "my iip", "tgt": { "port": "IN", "process": "foo" } }
+      ]
+    }
+  to: ""
+  diff: |
+    - foo(Bar)
+    - "my iip" -> IN foo

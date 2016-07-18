@@ -303,12 +303,27 @@ readGraph = (contents, type, options) ->
 # TODO: support parsing up a diff from the textual output format?
 # Mostly useful if/when one can apply diff as a patch
 
+nullGraph = () ->
+  g =
+    processes: {}
+    connections: []
+  return clone g
+
+
 # diff two graphs
 exports.diff = (from, to, options) ->
   options = normalizeOptions options
 
-  f = readGraph from, options.fromFormat, options
-  t = readGraph to, options.toFormat, options
+  # Handle empty graph when in JSON format
+  f = if options.fromFormat == 'json' and from == ""
+    readGraph nullGraph(), 'object', options
+  else
+    readGraph from, options.fromFormat, options
+
+  t = if options.toFormat == 'json' and to == ""
+    readGraph nullGraph(), 'object', options
+  else
+    readGraph to, options.toFormat, options
 
   diff = calculateDiff f, t
   out = formatDiffTextual diff
