@@ -72,6 +72,11 @@ Other possibly useful libs
 * Graph theory and visualization, [Cytoscape](http://js.cytoscape.org/#demos)
 * [JSON Diff](https://github.com/zgrossbart/jdd)
 
+## Related / prior art
+
+* [Prettydiff](http://prettydiff.com/guide/unrelated_diff.xhtml), well-described algorithm and considerations for diffing.
+* [ydiff](https://github.com/yinwang0/ydiff), structural diffing for Lisp programs
+
 # git integration
 
 ## git diff/merge tools
