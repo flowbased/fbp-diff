@@ -1,5 +1,7 @@
 # fbp-diff
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/flowbased/fbp-diff.svg)](https://greenkeeper.io/)
+
 Diff utility for [FBP graphs](http://github.com/flowbased/fbp),
 making it easier to determine changes compare to using a naive textual diff of the JSON files.
 
